@@ -1,6 +1,7 @@
 package com.huayingluo.backend.service.impl;
 
 import com.huayingluo.backend.service.DemoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DemoServiceImpl implements DemoService {
+
     @Override
     public String getTest() {
         return "hello world!";

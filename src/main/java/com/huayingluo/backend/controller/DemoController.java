@@ -1,13 +1,16 @@
 package com.huayingluo.backend.controller;
 
+import com.huayingluo.backend.entity.UserEntity;
 import com.huayingluo.backend.http.exception.BaseException;
-import com.huayingluo.backend.http.response.Result;
+import com.huayingluo.backend.http.response.BaseResult;
 import com.huayingluo.backend.http.response.ResultBuilder;
-import com.huayingluo.backend.model.User;
 import com.huayingluo.backend.service.DemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author huangyue
@@ -37,9 +40,9 @@ public class DemoController {
      * 隐式响应，即方法响应体就是业务实体，优点直观明了
      */
     @GetMapping("/getUser")
-    public User getUser() {
-        User user = new User(1, "IT学习道场", 18);
-        return user;
+    public UserEntity getUser() {
+        UserEntity userEntity = new UserEntity(1, "IT学习道场", 18);
+        return userEntity;
     }
 
 
@@ -51,13 +54,13 @@ public class DemoController {
      * 但是需要自己构建Result对象
      */
     @GetMapping("/getResult")
-    public Result<User> getResult() {
+    public BaseResult<UserEntity> getResult() {
 
-        User user = new User(1, "IT学习道场", 18);
+        UserEntity userEntity = new UserEntity(1, "IT学习道场", 18);
 
         //可以根据不同的业务处理渲染不同的Result，增加了灵活性
 
-        Result<User> result = ResultBuilder.render(200, true, "只是我自己构建的Result", user);
+        BaseResult<UserEntity> result = ResultBuilder.render(200, true, "只是我自己构建的Result", userEntity);
 
         return result;
 
@@ -70,7 +73,7 @@ public class DemoController {
 
     @GetMapping("/testBaseException")
 
-    public User testBaseException() {
+    public UserEntity testBaseException() {
 
         throw new BaseException(508, "触发自定义业务异常了");
 
@@ -83,7 +86,7 @@ public class DemoController {
 
     @GetMapping("/testException")
 
-    public User testException() {
+    public UserEntity testException() {
 
         throw new RuntimeException("业务异常了");
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huayingluo.backend.dao.TbUserDao">
+    <sql id="queryWhere">
+        <where>
+            <if test="query.username != null and query.username !=''">
+                username like concat("%",#{query.username},"%")
+            </if>
+            <if test="query.phone != null and query.phone != ''">
+                AND phone = #{query.phone}
+            </if>
+            <if test="query.email != null and query.email != ''">
+                AND email = #{query.email}
+            </if>
+        </where>
+    </sql>
+    <select id="getAll" resultType="com.huayingluo.backend.entity.TbUserEntity">
+        SELECT * FROM tb_user ORDER BY CREATED DESC
+    </select>
+    <select id="getByPage" resultType="com.huayingluo.backend.entity.TbUserEntity">
+        SELECT * FROM tb_user
+        <include refid="queryWhere"/>
+        ORDER BY CREATED DESC
+        LIMIT #{start},#{length}
+    </select>
+    <select id="getCount" resultType="int">
+        SELECT count(1) FROM tb_user
+        <include refid="queryWhere"/>
+    </select>
+    <select id="getByUserNameAndPasswrod" resultType="com.huayingluo.backend.entity.TbUserEntity">
+        SELECT * from tb_user where username=#{userName} and password=#{password}
+    </select>
+    <select id="getById" resultType="com.huayingluo.backend.entity.TbUserEntity">
+        SELECT * from tb_user where id=#{id}
+    </select>
+    <delete id="delete">
+        delete  from tb_user where id=#{id}
+    </delete>
+    <insert id="create" parameterType="com.huayingluo.backend.entity.TbUserEntity">
+        INSERT INTO `tb_user` (
+        `username`,
+        `password`,
+        `phone`,
+        `email`,
+        `created`,
+        `updated`
+        )
+        VALUES
+        (
+        #{username},
+        #{password},
+        #{phone},
+        #{email},
+        #{created},
+        #{updated}
+        );
+    </insert>
+    <update id="update" >
+        update  tb_user  SET
+        `username` = #{username},
+        <if test="password != null and password != '' ">
+            `password` = #{password},
+        </if>
+        `phone` = #{phone},
+        `email` = #{email},
+        `updated` = #{updated}
+        WHERE `id` = #{id};
+    </update>
+</mapper>

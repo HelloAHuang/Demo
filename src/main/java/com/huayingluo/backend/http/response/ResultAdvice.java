@@ -67,7 +67,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
 
         //如果响应体Result，直接返回，不做处理
 
-        if (o instanceof Result) {
+        if (o instanceof BaseResult) {
 
             return o;
 
@@ -77,7 +77,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
 
         if (o instanceof String) {
 
-            Result<String> result = ResultBuilder.ok(ResponseStateEnum.success.value, o.toString());
+            BaseResult<String> result = ResultBuilder.ok(ResponseStateEnum.success.value, o.toString());
 
             return JsonUtil.object2Json(result);
 
